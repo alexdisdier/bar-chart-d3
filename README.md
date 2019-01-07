@@ -6,7 +6,7 @@ This is a bar chart using D3.js.
 
 ## Usage example
 
-:construction: See a live version running this template - https://alexdisdier.github.io/bar-chart/
+:construction: See a live version running this template - https://alexdisdier.github.io/bar-chart-d3/
 
 ## Directory Structure
 
