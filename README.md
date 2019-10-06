@@ -19,7 +19,7 @@ This is a bar chart using D3.js.
 * html
 * scss
 * [JavaScript](https://developer.mozilla.org/bm/docs/Web/JavaScript)
-* D3.js
+* [D3.js](https://d3js.org/)
 
 ## Authors
 
