@@ -150,9 +150,9 @@ class BarChart extends Component {
               " Billion"
           )
           .attr("data-date", dataset[i][0])
-          .style("left", i * barWidth + 30 + "px")
-          .style("top", h - 100 + "px")
-          .style("transform", "translateX(60px)");
+          .style("left", i * barWidth + padding + "px")
+          .style("top", h * 1.3 + "px")
+          .style("transform", `translateX(${padding * 4.5}px)`);
       })
       .on("mouseout", () => {
         tooltip
