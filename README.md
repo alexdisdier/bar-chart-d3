@@ -2,16 +2,14 @@
 
 This is a bar chart using D3.js.
 
-![screenshot of a bar chart](/src/screenshot.jpg?raw=true "screenshot of a bar chart")
-
 ## Usage example
 
-:construction: See a live version running this template - https://alexdisdier.github.io/bar-chart-d3/
+See a live version running this template - https://alexdisdier.github.io/bar-chart-d3/
 
 ## Built With
 
 - html
-- scss
+- css
 - [JavaScript](https://developer.mozilla.org/bm/docs/Web/JavaScript)
 - [D3.js](https://d3js.org/)
 
