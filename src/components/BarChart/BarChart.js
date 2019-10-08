@@ -9,112 +9,129 @@ class BarChart extends Component {
   }
 
   drawChart() {
-    const { dataset, padding, id, width: w, height: h } = this.props;
-    /**
-     * domain(): values ranging from dataSet min. to dataSet max.
-     * e.g: 50, 480
-     * this method passes information to the scale about the raw data values for the plot.
-     *
-     * range(): dataSet points along the x axis on the SVG canvas.
-     * e.g: 10, 500 (min value needs to be smaller than dataSet min - 50 and max value needs to be bigger than dataSet max - 480)
-     * this method gives it information about the actual space on the web page for the visualization.
-     *
-     * these 2 methods take an array or at least 2 elements as an argument.
-     *
-     * scale.domain([50, 480])
-     * scale.range([10, 500])
-     * Or scale.domain([50, 480]).range([10, 500])
-     *
-     * scale(50) // Returns 10
-     * scale(480) // Returns 500
-     */
+    const { dataset, id, width: w, height: h } = this.props;
+
+    const barWidth = w / dataset.length;
+    const padding = 60;
 
     /**
-     * x axis date
-     * - oldest date
-     * - newest date
-     *
-     * y axis GDP values
-     * - smallest value
-     * - biggest value
+     * =======================================
+     * BUILD SVG CANVAS
+     * where the diagram will be placed.
      */
+    const svgWrapper = d3
+      .select(`[id=${id}]`)
+      .append("svg")
+      .attr("width", w + 100)
+      .attr("height", h + 60);
 
-    const minDate = d3.min(dataset, d => d[0]);
-    const maxDate = d3.max(dataset, d => d[0]);
+    /**
+     * =======================================
+     * BUILD THE X-AXIS with labels
+     */
+    const yearsDate = dataset.map(item => new Date(item[0]));
 
-    const minGDP = d3.min(dataset, d => d[1]);
-    const maxGDP = d3.max(dataset, d => d[1]);
+    const xMax = new Date(d3.max(yearsDate));
+
+    // maxDate.setMonth(maxDate.getMonth() + 3);
 
     const xScale = d3
-      .scaleLinear()
-      .domain([0, maxDate])
-      .range([padding, w - padding]);
+      .scaleTime()
+      .domain([d3.min(yearsDate), xMax])
+      .range([0, w]);
+
+    const xAxis = d3.axisBottom(xScale);
+
+    /**
+     * Draw the X axis
+     */
+    svgWrapper
+      .append("g")
+      .attr("id", "x-axis")
+      .attr("transform", `translate(${padding}, ${h})`)
+      .attr("class", "tick")
+      .call(xAxis);
+
+    /**
+     * Add Y-axis legend
+     */
+    svgWrapper
+      .append("text")
+      .attr("x", w / 2 + 120)
+      .attr("y", h + 50)
+      .style("font-size", 12)
+      .text("More Information: http://www.bea.gov/national/pdf/nipaguid.pdf");
+
+    /**
+     * =======================================
+     * BUILD THE Y-AXIS with labels
+     */
+
+    const gdpMin = d3.min(dataset, d => d[1]);
+    const gdpMax = d3.max(dataset, d => d[1]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, maxGDP])
-      .range([h - padding, padding]);
+      .domain([0, gdpMax])
+      .range([h, 0]);
 
-    const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
 
     /**
-     * Create the SVG canvas where the diagram will be placed.
+     * Draw the Y-axis
      */
-    const svg = d3
-      .select(`[id=${id}]`)
-      .append("svg")
-      .attr("width", w)
-      .attr("height", h);
-
-    /**
-     * Draw the Y axis
-     */
-    svg
+    svgWrapper
       .append("g")
       .attr("id", "y-axis")
-      .attr("transform", "translate(" + padding + ",0)")
+      .attr("transform", `translate(${padding},0)`)
       .attr("class", "tick")
       .call(yAxis);
 
     /**
-     * Draw the X axis
-     * Creating the axis using g (for groups)
+     * Add Y-axis legend
      */
-    svg
-      .append("g")
-      .attr("id", "x-axis")
-      .attr("transform", "translate(0," + (h - padding) + ")")
-      .attr("class", "tick")
-      .call(xAxis);
+    svgWrapper
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -200)
+      .attr("y", 80)
+      .style("font-size", 12)
+      .text("Gross Domestic Product");
 
-    // /**
-    //  * Create all the bars
-    //  */
-    // svg
-    //   .selectAll("rect")
-    //   .data(dataset)
-    //   .enter()
-    //   .append("rect")
-    //   .attr("x", d => xScale(d[0]))
-    //   .attr("y", d => yScale(d[1]))
-    //   .attr("width", 3)
-    //   .attr("height", 30)
-    //   .attr("class", "bar")
-    //   .attr("data-date", (d, i) => dataset[i][0])
-    //   .attr("data-gdp", (d, i) => dataset[i][1]);
+    /**
+     * =======================================
+     * BUILD THE BARS with tooltips
+     */
 
-    // /**
-    //  * Create all the text
-    //  */
-    // svg
-    //   .selectAll("text")
-    //   .data(dataset)
-    //   .enter()
-    //   .append("text")
-    //   .text(d => d)
-    //   .attr("x", (d, i) => i * 70)
-    //   .attr("y", (d, i) => h - 10 * d - 3);
+    const tooltip = d3
+      .select(`#${id}`)
+      .append("div")
+      .attr("id", "tooltip")
+      .style("opacity", 0);
+
+    svgWrapper
+      .selectAll("rect")
+      .data(dataset)
+      .enter()
+      .append("rect")
+      .attr("x", (d, i) => xScale(yearsDate[i]) + padding)
+      .attr("y", d => yScale(d[1]))
+      .attr("width", barWidth)
+      .attr("height", d => h - yScale(d[1]))
+      .attr("class", "bar")
+      .attr("data-date", (d, i) => dataset[i][0])
+      .attr("data-gdp", (d, i) => dataset[i][1])
+      // tooltip
+      .on("mouseover", () =>
+        tooltip
+          .transition()
+          .duration(200)
+          .style("opacity", 0.9)
+      )
+      .on("mouseout", () => console.log("out"))
+      .append("title")
+      .attr("id", "tooltip")
+      .attr("data-date", (d, i) => dataset[i][0]);
   }
 
   render() {

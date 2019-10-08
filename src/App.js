@@ -9,7 +9,7 @@ class App extends Component {
   state = {
     dataset: barData.data,
     width: 800,
-    height: 500,
+    height: 400,
     id: "title",
     padding: 60
   };
