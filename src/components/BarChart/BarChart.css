@@ -8,9 +8,31 @@ svg {
 }
 
 .bar {
-  fill: #ffc107;
+  fill: #ffc75f;
 }
 
 .bar:hover {
-  fill: #212121;
+  fill: #fee6bb;
+}
+
+#tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  width: 150px;
+  height: 50px;
+  padding: 2px;
+  font-size: 12px;
+  background: #b5aa99;
+  box-shadow: 1px 1px 10px;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  background: #fff;
+  pointer-events: none;
 }

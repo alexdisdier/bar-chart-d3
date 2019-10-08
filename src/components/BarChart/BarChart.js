@@ -67,7 +67,6 @@ class BarChart extends Component {
      * BUILD THE Y-AXIS with labels
      */
 
-    const gdpMin = d3.min(dataset, d => d[1]);
     const gdpMax = d3.max(dataset, d => d[1]);
 
     const yScale = d3
@@ -109,6 +108,12 @@ class BarChart extends Component {
       .attr("id", "tooltip")
       .style("opacity", 0);
 
+    var overlay = d3
+      .select(`#${id}`)
+      .append("div")
+      .attr("class", "overlay")
+      .style("opacity", 0);
+
     svgWrapper
       .selectAll("rect")
       .data(dataset)
@@ -122,16 +127,43 @@ class BarChart extends Component {
       .attr("data-date", (d, i) => dataset[i][0])
       .attr("data-gdp", (d, i) => dataset[i][1])
       // tooltip
-      .on("mouseover", () =>
+      .on("mouseover", (d, i) => {
+        overlay
+          .transition()
+          .duration(0)
+          .style("height", d + "px")
+          .style("width", barWidth + "px")
+          .style("opacity", 0.9)
+          .style("left", i * barWidth + 0 + "px")
+          .style("top", h - d + "px")
+          .style("transform", "translateX(60px)");
         tooltip
           .transition()
           .duration(200)
-          .style("opacity", 0.9)
-      )
-      .on("mouseout", () => console.log("out"))
-      .append("title")
-      .attr("id", "tooltip")
-      .attr("data-date", (d, i) => dataset[i][0]);
+          .style("opacity", 0.9);
+        tooltip
+          .html(
+            dataset[i][0] +
+              "<br/>" +
+              "$" +
+              dataset[i][1].toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,") +
+              " Billion"
+          )
+          .attr("data-date", dataset[i][0])
+          .style("left", i * barWidth + 30 + "px")
+          .style("top", h - 100 + "px")
+          .style("transform", "translateX(60px)");
+      })
+      .on("mouseout", () => {
+        tooltip
+          .transition()
+          .duration(200)
+          .style("opacity", 0);
+        overlay
+          .transition()
+          .duration(200)
+          .style("opacity", 0);
+      });
   }
 
   render() {
