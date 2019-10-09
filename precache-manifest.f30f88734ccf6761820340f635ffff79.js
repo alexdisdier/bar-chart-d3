@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/bar-chart-d3/static/js/runtime~main.f470b2fe.js"
   },
   {
-    "revision": "ea01ce84fdf6205b500a",
-    "url": "/bar-chart-d3/static/js/main.ea01ce84.chunk.js"
+    "revision": "428438a68fd06d4416e4",
+    "url": "/bar-chart-d3/static/js/main.428438a6.chunk.js"
   },
   {
     "revision": "c984098a5270b7f06922",
     "url": "/bar-chart-d3/static/js/1.c984098a.chunk.js"
   },
   {
-    "revision": "ea01ce84fdf6205b500a",
-    "url": "/bar-chart-d3/static/css/main.08bc2ce3.chunk.css"
+    "revision": "428438a68fd06d4416e4",
+    "url": "/bar-chart-d3/static/css/main.14e66c63.chunk.css"
   },
   {
-    "revision": "16502836274376a421d7acc8aca5e8aa",
+    "revision": "8a2b9f0aa8b016813e76ff3c21f8b0d0",
     "url": "/bar-chart-d3/index.html"
   }
 ];
