@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 
-import { drawSvgWrapper } from "utils";
+import { drawSvgWrapper, drawXScale, drawXaxis } from "utils";
 
 import "./BarChart.css";
 
@@ -32,22 +32,14 @@ class BarChart extends Component {
 
     // maxDate.setMonth(maxDate.getMonth() + 3);
 
-    const xScale = d3
-      .scaleTime()
-      .domain([d3.min(yearsDate), xMax])
-      .range([0, w]);
+    const xScale = drawXScale(d3.min(yearsDate), xMax, w);
 
     const xAxis = d3.axisBottom(xScale);
 
     /**
      * Draw the X axis
      */
-    svgWrapper
-      .append("g")
-      .attr("id", "x-axis")
-      .attr("transform", `translate(${padding}, ${h})`)
-      .attr("class", "tick")
-      .call(xAxis);
+    drawXaxis(svgWrapper, padding, h, xAxis);
 
     /**
      * Add Y-axis legend

@@ -3,7 +3,7 @@ import { drawSvgWrapper } from "./index";
 
 jest.mock("d3", () => ({
   d3: {
-    select: () => {},
+    select: jest.fn(),
     append: () => {},
     attr: () => {}
   }
