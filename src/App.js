@@ -10,12 +10,13 @@ class App extends Component {
     dataset: barData.data,
     width: 800,
     height: 400,
-    id: "title",
-    padding: 60
+    id: "container",
+    padding: 60,
+    margin: 100
   };
 
   render() {
-    const { dataset, width, height, id, padding } = this.state;
+    const { dataset, width, height, id, padding, margin } = this.state;
     return (
       <div className="App">
         <BarChart
@@ -24,6 +25,7 @@ class App extends Component {
           height={height}
           id={id}
           padding={padding}
+          margin={margin}
         />
       </div>
     );

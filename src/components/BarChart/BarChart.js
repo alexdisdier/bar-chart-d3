@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 
+import { drawSvgWrapper } from "utils";
+
 import "./BarChart.css";
 
 class BarChart extends Component {
@@ -9,21 +11,16 @@ class BarChart extends Component {
   }
 
   drawChart() {
-    const { dataset, id, width: w, height: h } = this.props;
+    const { dataset, id, width: w, height: h, padding, margin } = this.props;
 
     const barWidth = w / dataset.length;
-    const padding = 60;
 
     /**
      * =======================================
      * BUILD SVG CANVAS
      * where the diagram will be placed.
      */
-    const svgWrapper = d3
-      .select(`[id=${id}]`)
-      .append("svg")
-      .attr("width", w + 100)
-      .attr("height", h + 60);
+    const svgWrapper = drawSvgWrapper(id, w, h, margin);
 
     /**
      * =======================================
@@ -150,7 +147,7 @@ class BarChart extends Component {
               " Billion"
           )
           .attr("data-date", dataset[i][0])
-          .style("left", i * barWidth + padding + "px")
+          .style("left", i * barWidth - padding + "px")
           .style("top", h * 1.3 + "px")
           .style("transform", `translateX(${padding * 4.5}px)`);
       })
@@ -167,7 +164,11 @@ class BarChart extends Component {
   }
 
   render() {
-    return <div id={this.props.id}> </div>;
+    return (
+      <div id={this.props.id}>
+        <h1 id="title">United States GDP</h1>
+      </div>
+    );
   }
 }
 
